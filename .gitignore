@@ -1,3 +1,45 @@
 *.lnk
 desktop.ini
 *.png
+# Logs and environment files
+*.log
+*.env
+*.env.*
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# AWS CLI and SDK cache files
+.aws-sam/
+.aws-sam-ignore
+
+# Terraform (if you use it)
+*.tfstate
+*.tfstate.backup
+.terraform/
+
+# Node modules (if you ever have JS code)
+node_modules/
+
+# MacOS files
+.DS_Store
+
+# Windows files
+Thumbs.db
+desktop.ini
+
+# Python virtual environment
+venv/
+env/
+.venv/
+.env/
