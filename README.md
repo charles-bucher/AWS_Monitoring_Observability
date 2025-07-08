@@ -1,87 +1,97 @@
-# AWS Monitoring Support Lab 🛠️📊
+📊 AWS Monitoring Support Lab
+By Charles — Aspiring Cloud Engineer
 
-A production-grade lab designed to demonstrate real-time infrastructure monitoring using **Amazon CloudWatch**, **SNS**, and the **CloudWatch Agent**. This project equips engineers with practical tools to detect, respond, and visualize cloud system events for proactive AWS operations.
+🧠 Project Overview
+This project demonstrates an end-to-end AWS monitoring and alerting solution built using core AWS services: EC2, S3, CloudWatch, SNS, and IAM. It showcases automated metrics collection, real-time alarms, and notifications to maintain system health and availability.
 
----
+⚙️ Architecture Diagram
+plaintext
+Copy code
++-------------------+          +----------------------+         +--------------------+
+|                   | Metrics  |                      |  Alarms |                    |
+|    EC2 Instance   +--------->|    CloudWatch Logs    +-------->|      SNS Topic      |
+|  (App & Metrics)  |          |    & CloudWatch Alarms|         | (Email Notifications)|
++-------------------+          +----------------------+         +--------------------+
+         |                                                            ^
+         |                                                            |
+         +--------------------> S3 Bucket (for logs storage) ---------+
+Diagram Explanation:
 
-## ✅ Use Case
+EC2 instances generate logs and custom metrics.
 
-> Set up intelligent monitoring for EC2 instances with alerting, logging, and dashboarding — all driven by automation.
+CloudWatch collects metrics and triggers alarms based on thresholds.
 
----
+Alarms notify via SNS to alert email recipients.
 
-## 🧠 Key Features
+Logs are archived in an S3 bucket for compliance and analysis.
 
-- 🔍 **Detailed EC2 Monitoring** with custom metrics
-- 🚨 **Alarms + SNS Notifications** for CPU, disk, and memory thresholds
-- 📦 **CloudWatch Agent** setup for in-depth metrics & log streaming
-- 📈 **Real-Time Dashboards** to visualize performance
-- 🧪 **Test Scripts** to validate alarm behavior and config
-- 🧰 **Infrastructure-as-Code ready** PowerShell automation
+📦 Components Breakdown
+Service	Role
+EC2	Application host generating metrics and logs
+CloudWatch	Monitoring metrics, creating alarms & dashboards
+SNS	Sending notifications upon alarm triggers
+S3	Centralized log storage
+IAM	Securing access permissions
 
----
+🚀 Features
+Custom CloudWatch Alarms: CPU utilization, disk I/O, and network traffic thresholds monitored
 
-## 📂 Repo Structure
+SNS Notifications: Real-time email alerts on alarm triggers
 
-```bash
-Aws-monitoring-support-lab/
-├── config/          # JSON config files for alarms, SNS, agent
-├── docs/            # Diagrams, architecture, visuals
-├── scripts/         # PowerShell scripts to deploy monitoring
-├── tests/           # Validation scripts for alarms/logs
-├── push-fresh.ps1   # Helper script to push repo updates
-└── README.md        # Project overview
-📊 Architecture Overview
+Centralized Logs: Aggregated logs stored in S3 for retention and audit
 
-Diagram: CloudWatch monitors EC2 → Alarms trigger SNS → Notifications sent via Email/SMS → Logs flow to CloudWatch Logs
+IAM Roles: Fine-grained permissions for secure access management
 
-🚀 Quick Start
-🔧 Prerequisites
-AWS Free Tier account
+Automated Setup: Includes scripts/configs for easy deployment and testing
 
-Configured AWS CLI (aws configure)
+🧪 How to Use
+Launch EC2 instance(s) with monitoring agent installed
 
-PowerShell 5.0+ or compatible terminal
+Configure CloudWatch agent to push metrics/logs to CloudWatch Logs
 
-⚙️ Setup Monitoring
-powershell
-Copy
-Edit
-# Clone the repo
-git clone https://github.com/Tommy813-lab/Aws-monitoring-support-lab.git
-cd Aws-monitoring-support-lab
+Deploy CloudWatch Alarms with predefined threshold configs
 
-# Run the setup script (coming soon)
-./scripts/setup-monitoring.ps1
-🧾 Configuration
-config/ec2-highcpu-alarm-config.json: Sets CloudWatch alarm for CPU > 80%
+Subscribe your email to SNS topics for alerts
 
-config/sns-topic-config.json: Creates SNS topic and email subscription
+Monitor dashboard and react to notifications
 
-config/cloudwatch-agent-config.json: Custom agent config for detailed metrics and logs
+🔐 Security Considerations
+IAM roles with least privilege principle applied
 
-🔔 Example Alarm Use Case
-Alarm: EC2 CPU exceeds 80%
-Action: Triggers SNS → Sends email alert
-Response: Admin receives notification and investigates
-Bonus: Logs available via CloudWatch Logs for troubleshooting
+S3 bucket access restricted via policies
 
-🔍 Validation
-Run checks to verify:
+Encrypted SNS communication
 
-CloudWatch Agent is active
+Alarms configured to minimize false positives
 
-Metrics are flowing
+🧩 Folder Structure
+bash
+Copy code
+.
+├── configs/                 # CloudWatch alarm configs
+├── scripts/                 # Setup and deployment scripts
+├── docs/                    # Documentation and diagrams
+├── logs/                    # Sample log files
+├── README.md                # Project overview and instructions
+└── LICENSE                  # License file (MIT recommended)
+📈 Monitoring & Alerts Demo
+(Add screenshots or animated GIFs here)
 
-Alarms are triggering correctly
+CloudWatch Alarms dashboard screenshot
 
-Logs are present in CloudWatch
+Email notification example
 
-🧑‍💻 Author
-Charles Bucher
-Cloud Support Enthusiast | Automation Builder | AWS Practitioner
-GitHub: Tommy813-lab
+Logs saved in S3 bucket preview
 
-📜 License
-MIT License — open for modification, use, and contribution.
+📚 References
+AWS CloudWatch Documentation
+
+AWS SNS Documentation
+
+IAM Best Practices
+
+S3 Bucket Policies
+
+🎯 Why This Matters
+This lab provides hands-on experience building robust monitoring solutions critical for maintaining cloud infrastructure health, ensuring uptime, and enabling proactive incident response — skills essential for any cloud engineer.
 
