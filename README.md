@@ -1,102 +1,133 @@
-📊 AWS Monitoring Support Lab
-Built & Owned by Charles — Aspiring Cloud Engineer
+🚨 proactive-monitoring-with-cloudwatch-sns
+A real-world AWS lab that shows how to proactively monitor EC2 health using Amazon CloudWatch and send instant alerts via SNS. Designed for Cloud Support Engineers and aspiring SREs, this project helps detect performance degradation before users complain—or worse—before the boss notices. 😅
 
-🧠 Project Overview
-This project walks through building a full AWS monitoring and alerting setup using EC2, S3, CloudWatch, SNS, and IAM. It’s designed to collect metrics, trigger alarms, and send real-time notifications so I can keep my infrastructure healthy and ready to scale.
+📘 Scenario
+You're a Tier 2 Cloud Support Engineer at a fast-growing SaaS company.
+The backend EC2 instances are starting to show occasional CPU spikes and disk pressure during business hours.
 
-It showcases automated metrics collection, real-time alarms, and notifications to keep systems healthy and available.
+Your task:
+🛑 Detect performance issues before they become incidents.
+🔔 Alert the on-call engineer via SNS the moment thresholds are breached.
+📊 Build dashboards for the DevOps team to track trends and resolve root causes.
 
-⚙️ Architecture Diagram
-lua
-Copy code
-      +-------------------+        Metrics         +-------------------------+         Alerts        +--------------------+
-      |                   | ---------------------> |                         | --------------------> |                    |
-      |    EC2 Instance    |                        |    CloudWatch Alarms &   |                      |      SNS Topic      |
-      |  (App & Metrics)   | <--------------------- |       CloudWatch Logs    | <-------------------- |  (Email Notifs)     |
-      +-------------------+         Logs            +-------------------------+                       +--------------------+
-              |
-              |
-              v
-       +-------------------+
-       |                   |
-       |     S3 Bucket     |
-       |  (Logs Archive)   |
-       +-------------------+
-Diagram Explanation
-EC2 Instance runs the app and sends metrics & logs.
+This repo is your weaponized response. ⚔️
 
-CloudWatch monitors metrics, triggers alarms, and stores logs.
+🧱 Architecture Overview
+scss
+Copy
+Edit
+             ┌────────────┐
+             │   EC2      │
+             │ (App/API)  │
+             └────┬───────┘
+                  │
+           CloudWatch Agent
+                  │
+        ┌─────────▼─────────┐
+        │   Amazon CloudWatch │
+        │  (Metrics & Alarms) │
+        └─────────┬─────────┘
+                  │ Alarm Triggered
+                  ▼
+         ┌────────────────────┐
+         │ Amazon SNS Topic   │
+         │ (Email / SMS alert)│
+         └────────┬───────────┘
+                  ▼
+           On-Call Engineer
+         (Phone buzzes instantly)
+⚙️ What’s Inside
+Feature	Description
+EC2 Setup	Launch an EC2 instance to monitor
+CloudWatch Agent Config	Collect memory, disk, CPU metrics
+Custom Metrics	Go beyond default—track disk space, memory
+CloudWatch Alarms	Define thresholds to trigger proactive alerts
+SNS Notification	Send alerts to on-call engineer (SMS/email)
+Dashboard Setup	Visualize system health trends like a boss
 
-SNS Topic sends notifications instantly when alarms fire.
-
-S3 Bucket archives logs for audit and compliance.
-
-📦 Components Breakdown
-Service	Role
-EC2	Runs the application and sends metrics/logs
-CloudWatch	Collects metrics, creates alarms & dashboards
-SNS	Sends notifications for alarm alerts
-S3	Centralized logs storage for retention and analysis
-IAM	Securely controls access and permissions
-
-🚀 Features
-Custom alarms on CPU, disk I/O, network metrics
-
-Real-time SNS email alerts on alarm triggers
-
-Logs aggregated and stored securely in S3
-
-IAM roles applying least privilege principle
-
-Scripts for easy deployment and management
-
-🧪 How to Use
-Launch EC2 instance(s) with CloudWatch agent installed
-
-Configure CloudWatch agent to send metrics and logs
-
-Deploy CloudWatch alarms using provided scripts/configs
-
-Subscribe your email to SNS topics for notifications
-
-Monitor via CloudWatch dashboards and respond promptly
-
-🔐 Security Considerations
-IAM roles strictly limit permissions
-
-S3 bucket policies restrict access tightly
-
-SNS communication encrypted and secured
-
-Alarm thresholds carefully tuned to reduce noise
-
-🧩 Folder Structure
+🚀 How to Deploy
+1. 🖥️ Launch EC2 + Install CloudWatch Agent
 bash
-Copy code
-.
-├── configs/      # CloudWatch alarm and log configs
-├── scripts/      # Setup, deployment, and cleanup scripts
-├── docs/         # Architecture diagrams and documentation
-├── logs/         # Sample log files for testing and demo
-├── README.md     # Project overview and instructions
-└── LICENSE       # MIT License info
-📈 Monitoring & Alerts Demo
-Add your own screenshots or animated GIFs here:
+Copy
+Edit
+sudo yum update -y
+sudo yum install -y amazon-cloudwatch-agent
+Copy in your cloudwatch-agent-config.json, then start the agent:
 
-CloudWatch alarms dashboard snapshot
+bash
+Copy
+Edit
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+ -a fetch-config -m ec2 -c file:cloudwatch-agent-config.json -s
+2. 📊 Create Alarms
+Example: High CPU (over 80% for 5 minutes)
 
-Example SNS email alert
+bash
+Copy
+Edit
+aws cloudwatch put-metric-alarm \
+ --alarm-name "HighCPUAlarm" \
+ --metric-name CPUUtilization \
+ --namespace AWS/EC2 \
+ --statistic Average \
+ --period 300 \
+ --threshold 80 \
+ --comparison-operator GreaterThanThreshold \
+ --evaluation-periods 1 \
+ --dimensions Name=InstanceId,Value=i-0123456789abcdef0 \
+ --alarm-actions arn:aws:sns:us-east-1:123456789012:MySNSTopic
+3. 📬 Set Up SNS Notifications
+bash
+Copy
+Edit
+aws sns create-topic --name MySNSTopic
+aws sns subscribe \
+ --topic-arn arn:aws:sns:us-east-1:123456789012:MySNSTopic \
+ --protocol email \
+ --notification-endpoint your.email@example.com
+✅ Success Criteria
+✅ You get notified within seconds of a high CPU event
 
-Logs preview in S3 bucket
+✅ Alarm shows up in CloudWatch console
 
-📚 References
-AWS CloudWatch Docs
+✅ You can track metrics visually via dashboard
 
-AWS SNS Docs
+✅ App remains up and healthy—users never know there was a problem 😎
 
-IAM Best Practices
+🧠 Real-World Use Cases
+Monitor high CPU, memory, disk usage on EC2
 
-S3 Bucket Policies
+Alert DevOps before users complain
 
-🎯 Why This Matters
-Building this lab sharpened my hands-on skills with AWS monitoring — a critical step toward managing reliable, scalable cloud systems. Keeping my infrastructure healthy means fewer surprises and more uptime, exactly what any cloud engineer should aim for.
+Track performance during app deployments
+
+Use as template for multi-tier monitoring systems
+
+🧰 Tools Used
+Amazon EC2
+
+CloudWatch Agent
+
+CloudWatch Alarms
+
+Amazon SNS
+
+AWS CLI
+
+IAM Role with CloudWatchAgentServerPolicy
+
+📚 Skills Demonstrated
+CloudWatch metric collection & alerting
+
+SNS setup for real-time alerts
+
+Linux EC2 configuration
+
+Troubleshooting under pressure
+
+Automation-ready CLI workflows
+
+💼 About Me
+Charles – Cloud Support Engineer-in-training 🧑‍💻
+Obsessed with cloud health, alerting early, and building quiet, resilient infrastructure.
+GitHub: Tommy813-lab
