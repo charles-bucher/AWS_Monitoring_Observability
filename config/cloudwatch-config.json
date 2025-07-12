@@ -1,6 +1,6 @@
 {
-  "AlarmName": "HighCPUUtilization-EC2GIT",
-  "AlarmDescription": "Alarm triggered when CPU utilization exceeds 80% on EC2 instance i-01a5e58f7ad1ed8ec (t2.micro)",
+  "AlarmName": "HighCPUUtilization-ProactiveMonitor",
+  "AlarmDescription": "Triggered when EC2 instance i-01a5e58f7ad1ed8ec CPU exceeds 80% for 5 minutes. Managed by Charles Bucher.",
   "ActionsEnabled": true,
   "MetricName": "CPUUtilization",
   "Namespace": "AWS/EC2",
@@ -16,26 +16,20 @@
     }
   ],
   "AlarmActions": [
-    "arn:aws:sns:us-east-2:965638720293:NotifyMe" 
+    "arn:aws:sns:us-east-2:965638720293:NotifyMe"
   ],
-  "Operator": "Charles Bucher",
-  "InstanceDetails": {
-    "InstanceType": "t2.micro",
-    "Monitoring": "detailed",
-    "State": "Stopped",
-    "KeyName": "my-key",
-    "LaunchTime": "2025-07-08T22:45:53-04:00",
-    "PlatformDetails": "Linux/UNIX",
-    "VPCId": "vpc-0797b53cea504364c",
-    "SubnetId": "subnet-057080ec6c5a43eaa",
-    "InstanceARN": "arn:aws:ec2:us-east-2:965638720293:instance/i-01a5e58f7ad1ed8ec"
-  }
+  "Tags": [
+    {
+      "Key": "Project",
+      "Value": "ProactiveMonitoring"
+    },
+    {
+      "Key": "Owner",
+      "Value": "Charles Bucher"
+    },
+    {
+      "Key": "Repo",
+      "Value": "Tommy813-lab/Proactive-monitoring-with-cloudwatch-sns"
+    }
+  ]
 }
-Notes:
-Used your real Instance ID and instance type (t2.micro).
-
-Alarm triggers if CPU average goes above 80% over 5 minutes.
-
-SNS ARN updated to your AWS account ID in us-east-2 region (update the topic name as needed).
-
-Added a custom "Operator": "Charles Bucher" to own it.
