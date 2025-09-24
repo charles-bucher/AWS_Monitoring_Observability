@@ -1,4 +1,7 @@
-🚨 proactive-monitoring-with-cloudwatch-sns
+> 🚨 TL;DR: Real-world AWS lab for proactive EC2 monitoring using CloudWatch + SNS. Detect CPU/memory/disk pressure before users complain. Designed for Cloud Support Engineers and aspiring SREs. Instant alerts, visual dashboards, and automation-ready CLI workflows.
+
+
+> 🚨 proactive-monitoring-with-cloudwatch-sns
 A real-world AWS lab that shows how to proactively monitor EC2 health using Amazon CloudWatch and send instant alerts via SNS. Designed for Cloud Support Engineers and aspiring SREs, this project helps detect performance degradation before users complain—or worse—before the boss notices. 😅
 
 📘 Scenario
