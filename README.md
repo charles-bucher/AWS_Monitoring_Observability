@@ -1,3 +1,6 @@
+## TL;DR
+This repo demonstrates...
+
 > 🚨 TL;DR: Real-world AWS lab for proactive EC2 monitoring using CloudWatch + SNS. Detect CPU/memory/disk pressure before users complain. Designed for Cloud Support Engineers and aspiring SREs. Instant alerts, visual dashboards, and automation-ready CLI workflows.
 
 

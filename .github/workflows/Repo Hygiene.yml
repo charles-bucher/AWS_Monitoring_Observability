@@ -1,0 +1,28 @@
+name: Repo Hygiene
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  hygiene-check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v2
+
+    - name: Terraform Format Check
+      run: terraform fmt -check -recursive || echo "::warning file=terraform::Terraform formatting issues detected"
+
+    - name: README Badge Refresh
+      run: |
+        sed -i "s/updated-[0-9]\{4\}--[0-9]\{2\}--[0-9]\{2\}/updated-$(date +'%Y--%m--%d')/" README.md || echo "README.md not found"
+
+    - name: README Lint (basic)
+      run: |
+        if ! grep -q "TL;DR" README.md; then echo "::warning file=README.md::Missing TL;DR block"; fi
+        if ! grep -q "cert" README.md; then echo "::warning file=README.md::Missing cert mapping"; fi
