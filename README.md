@@ -134,3 +134,15 @@ Automation-ready CLI workflows
 Charles – Cloud Support Engineer-in-training 🧑‍💻
 Obsessed with cloud health, alerting early, and building quiet, resilient infrastructure.
 GitHub: Tommy813-lab
+
+---
+
+
+### Cert Mapping
+This project aligns with AWS Cloud Practitioner, Solutions Architect, or DevOps cert domains.
+
+<!-- Badges -->
+![Cert Alignment](https://img.shields.io/badge/cert-AWS-blue)
+![Repo Type](https://img.shields.io/badge/type-Infrastructure-green)
+![Last Updated](https://img.shields.io/badge/updated-2025--09--30-orange)
+
