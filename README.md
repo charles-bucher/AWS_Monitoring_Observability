@@ -149,3 +149,6 @@ This project aligns with AWS Cloud Practitioner, Solutions Architect, or DevOps 
 ![Repo Type](https://img.shields.io/badge/type-Infrastructure-green)
 ![Last Updated](https://img.shields.io/badge/updated-2025--09--30-orange)
 
+
+## Badges
+[![AWS Certified](https://img.shields.io/badge/AWS-Certified-blue)](https://aws.amazon.com/certification/)
