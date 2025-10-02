@@ -3,7 +3,9 @@ This repo demonstrates...
 
 > 🚨 TL;DR: Real-world AWS lab for proactive EC2 monitoring using CloudWatch + SNS. Detect CPU/memory/disk pressure before users complain. Designed for Cloud Support Engineers and aspiring SREs. Instant alerts, visual dashboards, and automation-ready CLI workflows.
 
-
+## 🏗️ Architecture Flow
+┌─────────────────┐ │   EC2 Instance  │ │   (Web/API)     │ │                 │ │  [CW Agent]     │ ← Collects: CPU, Memory, Disk └────────┬────────┘ │ Pushes metrics every 60s ▼ ┌─────────────────────────┐ │  Amazon CloudWatch      │ │  - Custom Metrics       │ │  - Standard Metrics     │ │  - Alarms (Thresholds)  │ └────────┬────────────────┘ │ │ Alarm State: OK → ALARM ▼ ┌─────────────────────────┐ │  Amazon SNS Topic       │ │  "Production-Alerts"    │ └────────┬────────────────┘ │ ┌────┴────┬──────────┬──────────┐ ▼         ▼          ▼          ▼ 📧 Email  📱 SMS   💬 Slack  📟 PagerDuty
+On-Call Engineer gets notified in < 30 seconds
 > 🚨 proactive-monitoring-with-cloudwatch-sns
 A real-world AWS lab that shows how to proactively monitor EC2 health using Amazon CloudWatch and send instant alerts via SNS. Designed for Cloud Support Engineers and aspiring SREs, this project helps detect performance degradation before users complain—or worse—before the boss notices. 😅
 
