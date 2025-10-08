@@ -1,0 +1,58 @@
+{
+  "_comment": "Proactive Monitoring Config - Level 10 Version by Charles Bucher",
+  "Environment": "Dev",
+  "Alarms": [
+    {
+      "AlarmName": "HighCPUUtilization-${InstanceName}",
+      "AlarmDescription": "Triggered when EC2 instance ${InstanceId} CPU exceeds 80% for 5 minutes. Managed by Charles Bucher.",
+      "MetricName": "CPUUtilization",
+      "Namespace": "AWS/EC2",
+      "Statistic": "Average",
+      "Period": 300,
+      "EvaluationPeriods": 1,
+      "Threshold": 80,
+      "ComparisonOperator": "GreaterThanThreshold",
+      "Dimensions": [
+        {
+          "Name": "InstanceId",
+          "Value": "${InstanceId}"
+        }
+      ],
+      "AlarmActions": [
+        "arn:aws:sns:us-east-2:965638720293:NotifyMe"
+      ],
+      "Tags": [
+        { "Key": "Project", "Value": "ProactiveMonitoring" },
+        { "Key": "Owner", "Value": "Charles Bucher" },
+        { "Key": "Repo", "Value": "Tommy813-lab/Proactive-monitoring-with-cloudwatch-sns" },
+        { "Key": "Environment", "Value": "${Environment}" }
+      ]
+    },
+    {
+      "AlarmName": "HighMemoryUtilization-${InstanceName}",
+      "AlarmDescription": "Triggered when EC2 instance ${InstanceId} Memory exceeds 75% for 5 minutes. Managed by Charles Bucher.",
+      "MetricName": "MemoryUtilization",
+      "Namespace": "System/Linux",
+      "Statistic": "Average",
+      "Period": 300,
+      "EvaluationPeriods": 1,
+      "Threshold": 75,
+      "ComparisonOperator": "GreaterThanThreshold",
+      "Dimensions": [
+        {
+          "Name": "InstanceId",
+          "Value": "${InstanceId}"
+        }
+      ],
+      "AlarmActions": [
+        "arn:aws:sns:us-east-2:965638720293:NotifyMe"
+      ],
+      "Tags": [
+        { "Key": "Project", "Value": "ProactiveMonitoring" },
+        { "Key": "Owner", "Value": "Charles Bucher" },
+        { "Key": "Repo", "Value": "Tommy813-lab/Proactive-monitoring-with-cloudwatch-sns" },
+        { "Key": "Environment", "Value": "${Environment}" }
+      ]
+    }
+  ]
+}
