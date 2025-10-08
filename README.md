@@ -1,181 +1,230 @@
-## TL;DR
-This repo demonstrates...
-
-> 🚨 TL;DR: Real-world AWS lab for proactive EC2 monitoring using CloudWatch + SNS. Detect CPU/memory/disk pressure before users complain. Designed for Cloud Support Engineers and aspiring SREs. Instant alerts, visual dashboards, and automation-ready CLI workflows.
-
-## 🏗️ Architecture Flow
-┌─────────────────┐ │   EC2 Instance  │ │   (Web/API)     │ │                 │ │  [CW Agent]     │ ← Collects: CPU, Memory, Disk └────────┬────────┘ │ Pushes metrics every 60s ▼ ┌─────────────────────────┐ │  Amazon CloudWatch      │ │  - Custom Metrics       │ │  - Standard Metrics     │ │  - Alarms (Thresholds)  │ └────────┬────────────────┘ │ │ Alarm State: OK → ALARM ▼ ┌─────────────────────────┐ │  Amazon SNS Topic       │ │  "Production-Alerts"    │ └────────┬────────────────┘ │ ┌────┴────┬──────────┬──────────┐ ▼         ▼          ▼          ▼ 📧 Email  📱 SMS   💬 Slack  📟 PagerDuty
-On-Call Engineer gets notified in < 30 seconds
-> 🚨 proactive-monitoring-with-cloudwatch-sns
-A real-world AWS lab that shows how to proactively monitor EC2 health using Amazon CloudWatch and send instant alerts via SNS. Designed for Cloud Support Engineers and aspiring SREs, this project helps detect performance degradation before users complain—or worse—before the boss notices. 😅
-
-📘 Scenario
-You're a Tier 2 Cloud Support Engineer at a fast-growing SaaS company.
-The backend EC2 instances are starting to show occasional CPU spikes and disk pressure during business hours.
-
-Your task:
-🛑 Detect performance issues before they become incidents.
-🔔 Alert the on-call engineer via SNS the moment thresholds are breached.
-📊 Build dashboards for the DevOps team to track trends and resolve root causes.
-
-This repo is your weaponized response. ⚔️
-
-🧱 Architecture Overview
-scss
-Copy
-Edit
-             ┌────────────┐
-             │   EC2      │
-             │ (App/API)  │
-             └────┬───────┘
-                  │
-           CloudWatch Agent
-                  │
-        ┌─────────▼─────────┐
-        │   Amazon CloudWatch │
-        │  (Metrics & Alarms) │
-        └─────────┬─────────┘
-                  │ Alarm Triggered
-                  ▼
-         ┌────────────────────┐
-         │ Amazon SNS Topic   │
-         │ (Email / SMS alert)│
-         └────────┬───────────┘
-                  ▼
-           On-Call Engineer
-         (Phone buzzes instantly)
-⚙️ What’s Inside
-Feature	Description
-EC2 Setup	Launch an EC2 instance to monitor
-CloudWatch Agent Config	Collect memory, disk, CPU metrics
-Custom Metrics	Go beyond default—track disk space, memory
-CloudWatch Alarms	Define thresholds to trigger proactive alerts
-SNS Notification	Send alerts to on-call engineer (SMS/email)
-Dashboard Setup	Visualize system health trends like a boss
-
-🚀 How to Deploy
-1. 🖥️ Launch EC2 + Install CloudWatch Agent
-bash
-Copy
-Edit
-sudo yum update -y
-sudo yum install -y amazon-cloudwatch-agent
-Copy in your cloudwatch-agent-config.json, then start the agent:
-
-bash
-Copy
-Edit
-sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
- -a fetch-config -m ec2 -c file:cloudwatch-agent-config.json -s
-2. 📊 Create Alarms
-Example: High CPU (over 80% for 5 minutes)
-
-bash
-Copy
-Edit
-aws cloudwatch put-metric-alarm \
- --alarm-name "HighCPUAlarm" \
- --metric-name CPUUtilization \
- --namespace AWS/EC2 \
- --statistic Average \
- --period 300 \
- --threshold 80 \
- --comparison-operator GreaterThanThreshold \
- --evaluation-periods 1 \
- --dimensions Name=InstanceId,Value=i-0123456789abcdef0 \
- --alarm-actions arn:aws:sns:us-east-1:123456789012:MySNSTopic
-3. 📬 Set Up SNS Notifications
-bash
-Copy
-Edit
-aws sns create-topic --name MySNSTopic
-aws sns subscribe \
- --topic-arn arn:aws:sns:us-east-1:123456789012:MySNSTopic \
- --protocol email \
- --notification-endpoint your.email@example.com
-✅ Success Criteria
-✅ You get notified within seconds of a high CPU event
-
-✅ Alarm shows up in CloudWatch console
-
-✅ You can track metrics visually via dashboard
-
-✅ App remains up and healthy—users never know there was a problem 😎
-
-🧠 Real-World Use Cases
-Monitor high CPU, memory, disk usage on EC2
-
-Alert DevOps before users complain
-
-Track performance during app deployments
-
-Use as template for multi-tier monitoring systems
-
-🧰 Tools Used
-Amazon EC2
-
-CloudWatch Agent
-
-CloudWatch Alarms
-
-Amazon SNS
-
-AWS CLI
-
-IAM Role with CloudWatchAgentServerPolicy
-
-📚 Skills Demonstrated
-CloudWatch metric collection & alerting
-
-SNS setup for real-time alerts
-
-Linux EC2 configuration
-
-Troubleshooting under pressure
-
-Automation-ready CLI workflows
-
-## 📸 Live Deployment Proof
-
-This project was deployed and validated in AWS. Screenshots below prove real infrastructure deployment:
-
-### Infrastructure Running
-![EC2 Instance Running](screenshots/ec2-running.png)
-*EC2 t2.micro instance successfully deployed and running*
-
-![CloudWatch Metrics](screenshots/cloudwatch-running.png)
-*CloudWatch actively collecting CPU metrics*
-
-![CloudWatch EC2 Monitoring](screenshots/cloudwatch-ec2.png)
-*EC2 instance integrated with CloudWatch monitoring*
-
-**Deployment Details:**
-- ✅ Terraform validated: `terraform plan` succeeded
-- ✅ Resources created: EC2, CloudWatch Alarm, SNS Topic
-- ✅ Monitoring active: CPU threshold at 70%
-- ✅ Cost: ~$0.05 total (destroyed after validation)
-- 📅 Validated: January 2025
-
----
+Proactive Monitoring with AWS CloudWatch & SNS
 
 
 
-💼 About Me
-Charles – Cloud Support Engineer-in-training 🧑‍💻
-Obsessed with cloud health, alerting early, and building quiet, resilient infrastructure.
-GitHub: Charles-Bucher
-
----
 
 
-### Cert Mapping
-This project aligns with AWS Cloud Practitioner, Solutions Architect, or DevOps cert domains.
 
-<!-- Badges -->
-![Cert Alignment](https://img.shields.io/badge/cert-AWS-blue)
-![Repo Type](https://img.shields.io/badge/type-Infrastructure-green)
-![Last Updated](https://img.shields.io/badge/updated-2025--09--30-orange)
+Table of Contents
+
+Project Overview
+
+Motivation
+
+Architecture
+
+Features
+
+Prerequisites
+
+Setup & Deployment
+
+Clone & config
+
+IAM / permissions
+
+Infrastructure provisioning (Terraform / CloudFormation)
+
+Validation & testing
+
+Usage
+
+Monitoring / Logging Insights
+
+Security Considerations
+
+Cost Implications
+
+Troubleshooting / FAQ
+
+Roadmap / Future Enhancements
+
+Contributing
+
+License
+
+Contact
+
+Project Overview
+
+This project is a hands-on lab for building a proactive monitoring & alerting system on AWS using CloudWatch, SNS, and EC2. It demonstrates how to gather detailed metrics, set alarms, send notifications, and analyze logs so that system issues are caught early, before they escalate.
+
+Motivation
+
+Many systems wait until things break before acting. That causes downtime, user complaints, avoidable incident costs.
+
+This lab aims to shift you to a proactive stance — monitor early signals, notify early, remediate quickly.
+
+Helps you build infrastructure that is maintainable, observable, and resilient.
+
+Architecture
+  +--------------------------+        +------------------+         +----------------+
+  |                          | ------>|                  |-------->|                |
+  |     EC2 Instances        |        |   CloudWatch     |         |      SNS       |
+  |  (with detailed metrics) | <--→   |  Alarms / Logs   |         | Notifications  |
+  |                          |        |                  |         | (email, SMS,   |
+  +--------------------------+        +------------------+         +----------------+
 
 
-## Badges
-[![AWS Certified](https://img.shields.io/badge/AWS-Certified-blue)](https://aws.amazon.com/certification/)
+EC2 instances collect metrics (CPU, memory, disk, etc.)
+
+CloudWatch configured to gather both basic + detailed monitoring / custom metrics
+
+Alarms are set for thresholds (eg high CPU, low disk)
+
+SNS topics to send notifications via email, SMS, or other endpoints
+
+Logging via CloudWatch Logs for deeper analysis
+
+Features
+
+✅ Detailed EC2 metrics (CPU, Memory, Disk, etc.)
+
+✅ Configurable thresholds & alarms
+
+✅ SNS notifications when thresholds are crossed
+
+✅ Use of infrastructure as code (IaC) — Terraform / CloudFormation
+
+✅ IAM roles / least privilege
+
+✅ Log collection & potential log alerting
+
+✅ Documentation + tests (if available)
+
+Prerequisites
+
+Before you begin, make sure you have:
+
+An AWS account with permissions to create / manage: EC2, IAM, CloudWatch, SNS, CloudWatch Logs
+
+AWS CLI installed & configured (or credentials via environment / IAM role)
+
+Terraform (if using Terraform configs) or CloudFormation skills if using stacks
+
+Basic familiarity with AWS metrics / monitoring concepts
+
+Setup & Deployment
+
+Follow these steps to get the lab running:
+
+Clone the repo
+
+git clone https://github.com/Tommy813-lab/Proactive-monitoring-with-cloudwatch-sns.git  
+cd Proactive-monitoring-with-cloudwatch-sns
+
+
+Configure AWS credentials
+
+Set up ~/.aws/credentials or use environment variables (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+
+(Optional) Use aws sts get-caller-identity to verify correct account / role
+
+Choose IaC method / deploy infrastructure
+
+If Terraform: go into the terraform/ or similar folder, update variables, run:
+
+terraform init  
+terraform plan  
+terraform apply
+
+
+If CloudFormation: use AWS Console or CLI to deploy stacks.
+
+Set up alarms & SNS topics
+
+Define metric thresholds (e.g. CPU > 80% for 5 min)
+
+Create SNS topics & subscribe endpoints (email, Slack, etc.)
+
+Verify everything works
+
+Trigger a test alarm (e.g. stress CPU or simulate log event)
+
+Check you receive a notification
+
+Check CloudWatch Logs for log entries
+
+Usage
+
+Monitor your AWS environment continuously
+
+Use as a template for adding more alarms / logs (e.g. network, RDS, etc.)
+
+Hook up more SNS subscribers — maybe Slack, Opsgenie, SMS etc.
+
+Use dashboards in CloudWatch to view aggregated alerts & metrics
+
+Monitoring / Logging Insights
+
+CloudWatch Logs can be used for post-mortem & trend analysis
+
+Alarms should be tuned to avoid noise / false positives
+
+Use detailed monitoring (1-minute granularity) where high fidelity is required
+
+Keep retention policies in mind to manage costs
+
+Security Considerations
+
+IAM permissions configured with least privilege
+
+SNS topics encrypted (if sensitive data)
+
+Secure handling of credentials (don’t commit secrets)
+
+Limit who can alter alarms / topics / metrics
+
+Ensure network security (security groups, VPCs) for instances
+
+Cost Implications
+
+CloudWatch detailed metrics cost more (especially 1-minute metrics)
+
+SNS has small costs, especially for SMS or certain regions
+
+IAM / logging storage costs add up — monitor usage
+
+Always set budget / billing alarms in AWS to catch cost surprises
+
+Troubleshooting / FAQ
+Problem	Possible Cause	Solution
+No notifications coming	SNS subscription not confirmed; alarm not in "ALARM" state	Confirm SNS subscription; force a test or trigger an alarm
+Metrics missing (e.g. memory usage)	EC2 lacking the CloudWatch agent; custom metrics not set up	Install CloudWatch agent; ensure permissions & config
+Too many alerts	Thresholds too low or interval too short; noisy metrics	Raise threshold; increase evaluation period; use anomaly detection
+High costs	Excess detailed metrics; long log retention; many SNS messages	Reduce metric granularity; lower retention; filter logs; limit endpoints
+Roadmap / Future Enhancements
+
+🔧 Add dashboards (CloudWatch Dashboards)
+
+🚨 Add anomaly detection & composite alarms
+
+🔒 Add support for multiple environments (dev / staging / prod)
+
+📊 Add metrics for RDS, Lambda, or other AWS services
+
+📱 Add mobile / Slack integration for notifications
+
+🧪 Automatic remediation (lambda invocations when alarm triggers)
+
+Contributing
+
+I welcome contributions! Here’s how you can help:
+
+Open issues for bugs or enhancements
+
+Send pull requests — please include tests or careful manual verification
+
+Follow code style, documentation, and security best practices
+
+Check out [CONTRIBUTING.md] for guidelines.
+
+License
+
+This project is licensed under the MIT License — see [LICENSE.md] for details.
+
+Contact
+
+Charles: Tommy813-lab
+Email: Quietopscb@gmail.com
+GitHub: Tommy813-lab
