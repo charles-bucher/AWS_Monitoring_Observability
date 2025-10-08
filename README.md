@@ -135,6 +135,31 @@ Troubleshooting under pressure
 
 Automation-ready CLI workflows
 
+## 📸 Live Deployment Proof
+
+This project was deployed and validated in AWS. Screenshots below prove real infrastructure deployment:
+
+### Infrastructure Running
+![EC2 Instance Running](screenshots/ec2-running.png)
+*EC2 t2.micro instance successfully deployed and running*
+
+![CloudWatch Metrics](screenshots/cloudwatch-running.png)
+*CloudWatch actively collecting CPU metrics*
+
+![CloudWatch EC2 Monitoring](screenshots/cloudwatch-ec2.png)
+*EC2 instance integrated with CloudWatch monitoring*
+
+**Deployment Details:**
+- ✅ Terraform validated: `terraform plan` succeeded
+- ✅ Resources created: EC2, CloudWatch Alarm, SNS Topic
+- ✅ Monitoring active: CPU threshold at 70%
+- ✅ Cost: ~$0.05 total (destroyed after validation)
+- 📅 Validated: January 2025
+
+---
+
+
+
 💼 About Me
 Charles – Cloud Support Engineer-in-training 🧑‍💻
 Obsessed with cloud health, alerting early, and building quiet, resilient infrastructure.
