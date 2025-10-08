@@ -15,3 +15,9 @@ variable "sns_topic_name" {
 variable "sns_email_endpoint" {
   description = "Email endpoint for SNS notifications"
 }
+
+variable "instance_type" {
+  description = "EC2 instance type"
+  type        = string
+  default     = "t2.micro"
+}
