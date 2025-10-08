@@ -138,7 +138,7 @@ Automation-ready CLI workflows
 💼 About Me
 Charles – Cloud Support Engineer-in-training 🧑‍💻
 Obsessed with cloud health, alerting early, and building quiet, resilient infrastructure.
-GitHub: Tommy813-lab
+GitHub: Charles-Bucher
 
 ---
 
