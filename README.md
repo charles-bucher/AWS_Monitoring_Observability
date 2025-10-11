@@ -110,7 +110,7 @@ Follow these steps to get the lab running:
 
 Clone the repo
 
-git clone https://github.com/Tommy813-lab/Proactive-monitoring-with-cloudwatch-sns.git  
+git clone https://github.com/Charles-Bucher/Proactive-monitoring-with-cloudwatch-sns.git  
 cd Proactive-monitoring-with-cloudwatch-sns
 
 
@@ -225,6 +225,6 @@ This project is licensed under the MIT License — see [LICENSE.md] for details.
 
 Contact
 
-Charles: Tommy813-lab
-Email: Quietopscb@gmail.com
-GitHub: Tommy813-lab
+Charles: Charles-Bucher
+Email: [Available on LinkedIn]
+GitHub: Charles-Bucher

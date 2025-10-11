@@ -19,4 +19,4 @@ This project should be a safe, friendly place to learn, share, and collaborate. 
 Project maintainers reserve the right to remove contributions or comments that break these guidelines.
 
 ## Contact
-If you feel something violates this code, reach out at: **quietopscb@gmail.com**
+If you feel something violates this code, reach out at: **[Available on LinkedIn]**

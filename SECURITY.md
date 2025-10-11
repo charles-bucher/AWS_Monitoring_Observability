@@ -2,7 +2,7 @@
 
 ## Reporting Issues
 If you find a security problem in this project, **please don’t open a public issue**.  
-Instead, email me at **quietopscb@gmail.com**.
+Instead, email me at **[Available on LinkedIn]**.
 
 ## Supported Versions
 - Main branch is actively supported.  
