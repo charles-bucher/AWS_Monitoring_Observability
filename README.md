@@ -228,3 +228,31 @@ Contact
 Charles: Charles-Bucher
 Email: [Available on LinkedIn]
 GitHub: Charles-Bucher
+
+
+## ✨ Key Features
+
+[![AWS](https://img.shields.io/badge/AWS-CloudWatch_SNS-FF9900?style=for-the-badge&logo=amazon-aws)](https://aws.amazon.com)
+[![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=for-the-badge&logo=python)](https://python.org)
+[![Monitoring](https://img.shields.io/badge/Monitoring-Proactive-success?style=for-the-badge)](https://github.com/charles-bucher)
+
+
+- 📊 **Real-Time Metrics** - Custom CloudWatch dashboards for EC2 monitoring
+- 🚨 **Automated Alerting** - SNS notifications for threshold breaches
+- 📈 **Performance Tracking** - CPU, memory, disk, and network metrics
+- ⚡ **Instant Response** - Email/SMS alerts within seconds of incidents
+- 🔧 **Easy Deployment** - Terraform-automated infrastructure setup
+- 💰 **Cost Efficient** - Serverless monitoring with minimal overhead
+
+## 🛠️ Technologies & Skills Demonstrated
+
+**AWS Services:** CloudWatch, SNS, EC2, Lambda, IAM  
+**Monitoring:** Metrics collection, alarm configuration, dashboard creation  
+**Automation:** Python scripting, Terraform IaC, CI/CD integration  
+**DevOps:** Incident response, proactive alerting, system observability
+
+## 📄 License
+
+MIT License - Free to use for learning and reference.
+
+See [LICENSE](LICENSE) for details.
