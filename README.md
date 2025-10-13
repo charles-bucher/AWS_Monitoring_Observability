@@ -77,6 +77,18 @@ This project proves I understand that "keeping the lights on" requires more than
 │              └──────────────────────────┘                   │
 └─────────────────────────────────────────────────────────────┘
 
+
+
+
+## Screenshots
+
+### Architecture Diagram
+![Architecture Diagram](screenshots/architecture.png)
+
+### Simulation Result
+![Simulation Result](screenshots/simulation_result.png)
+
+
 🔥 KEY FEATURES
 📈 Comprehensive Monitoring
 
