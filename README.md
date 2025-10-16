@@ -1,11 +1,21 @@
 📊 Proactive Infrastructure Monitoring with CloudWatch & SNS
 Enterprise-Grade Observability with Automated Alerting and Response
+
+![Terraform](https://img.shields.io/badge/Terraform-Used-blueviolet)
+![AWS Certified](https://img.shields.io/badge/AWS-Certified-yellowgreen)
+![CloudWatch](https://img.shields.io/badge/CloudWatch-Alerts-orange)
+![SNS](https://img.shields.io/badge/SNS-Notifications-lightgrey)
+![License](https://img.shields.io/github/license/charles-bucher/Proactive-monitoring-with-cloudwatch-sns)
+
+
 Show Image
 Show Image
 Show Image
 Show Image
 Show Image
 </div>
+
+
 
 🎯 PROJECT OVERVIEW
 This project implements a production-ready monitoring and alerting system using AWS CloudWatch, SNS, and Lambda. It's not just "set up some alarms"—it's a comprehensive observability solution that detects problems before they impact users.
