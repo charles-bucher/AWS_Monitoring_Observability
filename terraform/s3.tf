@@ -1,42 +1,55 @@
-// file: s3.tf
+###########################
+# S3 Bucket
+###########################
 
-resource "aws_s3_bucket" "static_site" {
+resource "aws_s3_bucket" "my_bucket" {
   bucket = var.bucket_name
   acl    = "private"
 
-  force_destroy = var.force_destroy
-
-  versioning {
-    enabled = true
+  tags = {
+    Name        = var.bucket_name
+    Environment = var.environment
   }
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-
-  logging {
-    target_bucket = var.logging_bucket != "" ? var.logging_bucket : null
-    target_prefix = "access-logs/"
-  }
-
-  lifecycle_rule {
-    id      = "default"
-    enabled = true
-    prefix  = ""
-    transitions = var.lifecycle_rules
-  }
-
-  tags = var.tags
 }
 
-output "bucket_name" {
-  value = aws_s3_bucket.static_site.id
+###########################
+# Enable Versioning
+###########################
+
+resource "aws_s3_bucket_versioning" "versioning" {
+  bucket = aws_s3_bucket.my_bucket.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
 
-output "bucket_arn" {
-  value = aws_s3_bucket.static_site.arn
+###########################
+# Enable Server Access Logging (Optional)
+###########################
+
+resource "aws_s3_bucket_logging" "logging" {
+  bucket = aws_s3_bucket.my_bucket.id
+
+  target_bucket = var.logging_bucket      # Must exist
+  target_prefix = "${var.bucket_name}/logs/"
 }
+
+###########################
+# Bucket Policy (Optional Public Access)
+###########################
+# Uncomment if you need to allow public read (for static website hosting)
+# resource "aws_s3_bucket_policy" "public_policy" {
+#   bucket = aws_s3_bucket.my_bucket.id
+#   policy = jsonencode({
+#     Version = "2012-10-17"
+#     Statement = [
+#       {
+#         Effect = "Allow"
+#         Principal = "*"
+#         Action = "s3:GetObject"
+#         Resource = "${aws_s3_bucket.my_bucket.arn}/*"
+#       }
+#     ]
+#   })
+# }

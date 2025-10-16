@@ -1,42 +1,79 @@
-// file: security.tf
+###########################
+# Security Group for EC2
+###########################
 
-resource "aws_cloudfront_origin_access_identity" "oai" {
-  comment = "OAI for ${var.bucket_name} static site"
+resource "aws_security_group" "ec2_sg" {
+  name        = "ec2-security-group"
+  description = "Allow SSH, HTTP, and HTTPS inbound traffic"
+  vpc_id      = var.vpc_id
+
+  ###########################
+  # Inbound Rules
+  ###########################
+  ingress {
+    description      = "SSH"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description      = "HTTP"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description      = "HTTPS"
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  ###########################
+  # Outbound Rules
+  ###########################
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "EC2-SG"
+  }
 }
 
-resource "aws_s3_bucket_policy" "static_site_policy" {
-  bucket = aws_s3_bucket.static_site.id
+###########################
+# Optional: Security Group for RDS
+###########################
 
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          AWS = aws_cloudfront_origin_access_identity.oai.iam_arn
-        }
-        Action   = ["s3:GetObject"]
-        Resource = "${aws_s3_bucket.static_site.arn}/*"
-      },
-      {
-        Effect    = "Deny"
-        Principal = "*"
-        Action    = ["s3:GetObject"]
-        Resource  = "${aws_s3_bucket.static_site.arn}/*"
-        Condition = {
-          Bool = {
-            "aws:SecureTransport" = "false"
-          }
-        }
-      }
-    ]
-  })
-}
+resource "aws_security_group" "rds_sg" {
+  name        = "rds-security-group"
+  description = "Allow MySQL/PostgreSQL inbound from EC2"
+  vpc_id      = var.vpc_id
 
-output "oai_id" {
-  value = aws_cloudfront_origin_access_identity.oai.id
-}
+  ingress {
+    description      = "Allow EC2 access"
+    from_port        = var.rds_port   # 3306 for MySQL, 5432 for PostgreSQL
+    to_port          = var.rds_port
+    protocol         = "tcp"
+    security_groups  = [aws_security_group.ec2_sg.id]
+  }
 
-output "oai_iam_arn" {
-  value = aws_cloudfront_origin_access_identity.oai.iam_arn
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "RDS-SG"
+  }
 }

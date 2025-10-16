@@ -1,54 +1,59 @@
-// file: outputs.tf
+###########################
+# EC2 Outputs
+###########################
 
-############################
-# Core Outputs
-############################
-
-output "cloudfront_url" {
-  description = "CloudFront distribution domain name (e.g., d1234abcd.cloudfront.net)"
-  value       = try(module.cloudfront.cloudfront_url, module.cloudfront.domain_name, null)
+output "ec2_instance_id" {
+  value       = aws_instance.web_server.id
+  description = "ID of the EC2 instance"
 }
+
+output "ec2_public_ip" {
+  value       = aws_instance.web_server.public_ip
+  description = "Public IP of the EC2 instance"
+}
+
+###########################
+# CloudWatch IAM Role Output
+###########################
+
+output "cloudwatch_role_arn" {
+  value       = aws_iam_role.cloudwatch_role.arn
+  description = "ARN of the CloudWatch IAM role"
+}
+
+###########################
+# IAM User Output
+###########################
+
+output "charles_b_user_name" {
+  value       = aws_iam_user.charles_b.name
+  description = "Name of IAM user charles_b"
+}
+
+###########################
+# S3 Bucket Output
+###########################
 
 output "s3_bucket_name" {
-  description = "S3 bucket name hosting the static site"
-  value       = try(module.s3_static_site.bucket_name, null)
+  value       = aws_s3_bucket.my_bucket.bucket
+  description = "Name of the S3 bucket"
 }
 
-output "acm_certificate_arn" {
-  description = "ARN of the ACM certificate used by CloudFront"
-  value       = try(module.acm_cert.certificate_arn, null)
+###########################
+# VPC Outputs
+###########################
+
+output "vpc_id" {
+  value       = aws_vpc.main.id
+  description = "ID of the VPC"
 }
 
-############################
-# Optional / Debug Outputs
-############################
-
-output "cloudfront_distribution_id" {
-  description = "CloudFront Distribution ID"
-  value       = try(module.cloudfront.distribution_id, null)
+output "public_subnet_ids" {
+  value       = aws_subnet.public[*].id
+  description = "List of public subnet IDs"
 }
 
-output "cloudfront_domain_name" {
-  description = "CloudFront domain name for the distribution"
-  value       = try(module.cloudfront.domain_name, null)
-}
-
-output "s3_bucket_arn" {
-  description = "ARN of the S3 bucket"
-  value       = try(module.s3_static_site.bucket_arn, null)
-}
-
-output "acm_certificate_status" {
-  description = "ACM certificate status (PENDING_VALIDATION, ISSUED, etc.)"
-  value       = try(module.acm_cert.certificate_status, null)
-}
-
-output "debug_info" {
-  description = "Optional debug info if debug=true"
-  value       = var.debug ? {
-    cloudfront_url       = try(module.cloudfront.cloudfront_url, null)
-    s3_bucket_name       = try(module.s3_static_site.bucket_name, null)
-    acm_certificate_arn  = try(module.acm_cert.certificate_arn, null)
-    cloudfront_status    = try(module.cloudfront.status, null)
-  } : null
+output "private_subnet_ids" {
+  value       = aws_subnet.private[*].id
+  description = "List of private subnet IDs"
 }
