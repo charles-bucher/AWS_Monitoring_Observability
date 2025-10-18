@@ -1,65 +1,66 @@
 🚨 Proactive Monitoring with CloudWatch & SNS
 
-TL;DR: Real-world AWS lab for proactive EC2 monitoring. Detect CPU, memory, and disk pressure before users notice. Designed for Cloud Support Engineers and aspiring SREs. Instant alerts, dashboards, and automation-ready workflows.
+TL;DR: Hands-on AWS lab for proactive EC2 monitoring. Detect CPU, memory, and disk pressure before users notice. Real-time alerts, dashboards, and automation-ready workflows for Cloud Support Engineers and aspiring SREs.
 
 🧠 Purpose & Context
 
-This project simulates a real-world scenario where backend EC2 instances experience performance spikes.
+This project simulates a real-world scenario where backend EC2 instances experience performance spikes:
 
-Detect issues before they become incidents.
+Detect issues before they become incidents
 
-Alert the on-call engineer via SNS within ~30 seconds.
+Alert on-call engineers via SNS in <30 seconds
 
-Build dashboards for trend analysis and root cause resolution.
+Build dashboards for trend analysis and root-cause resolution
 
-I built this to demonstrate hands-on AWS monitoring, alerting, and infrastructure automation with Terraform.
+I built this to demonstrate hands-on AWS monitoring, alerting, and infrastructure automation using Terraform.
 
 🧱 Architecture Overview
 ┌─────────────┐
-│  EC2 Instance│
-│  (App/API)   │
+│ EC2 Instance│  (App/API)
 └─────┬───────┘
-      │ CloudWatch Agent
+      │
+ CloudWatch Agent
       ▼
 ┌───────────────┐
-│ Amazon CloudWatch │
-│ Metrics & Alarms  │
+│ Amazon CloudWatch │ Metrics & Alarms
 └─────┬─────────┘
-      ▼ Alarm Triggered
+      ▼
 ┌───────────────┐
-│ Amazon SNS    │
-│ Email/SMS/Slack│
+│ Amazon SNS    │ Email / SMS / Slack
 └─────┬─────────┘
       ▼
 On-Call Engineer Notified < 30s
 
-Screenshots
+🖼 Screenshots
 
 IAM Permissions Check:
 
 
-Terraform Initialization:
+CloudWatch Agent Config:
+
+
+Terraform Deployment:
 
 
 ⚙️ What This Project Does
 
 Automatic Metric Collection:
 
-CPU, memory, and disk metrics every 60s using CloudWatch Agent.
+CPU, memory, and disk metrics every 60s via CloudWatch Agent
 
 Alarming & Notifications:
 
-Threshold-based alarms (e.g., CPU > 80% for 5 mins).
+Threshold-based alarms (e.g., CPU > 80% for 5 minutes)
 
-SNS sends instant alerts via Email, SMS, or Slack.
+SNS sends instant alerts via Email, SMS, or Slack
 
 Infrastructure Automation:
 
-Terraform modules manage EC2, IAM roles, CloudWatch alarms, and SNS topics.
+Terraform modules manage EC2, IAM roles, CloudWatch alarms, and SNS topics
 
 Visual Monitoring:
 
-Dashboards track system health and trends over time.
+Dashboards track system health and trends over time
 
 🚀 Deployment Steps
 
@@ -68,7 +69,7 @@ Launch EC2 & install CloudWatch Agent
 sudo yum update -y
 sudo yum install -y amazon-cloudwatch-agent
 sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
-    -a fetch-config -m ec2 -c file:cloudwatch-agent-config.json -s
+-a fetch-config -m ec2 -c file:cloudwatch-agent-config.json -s
 
 
 Create CloudWatch Alarms
@@ -90,56 +91,57 @@ Set Up SNS Notifications
 
 aws sns create-topic --name MySNSTopic
 aws sns subscribe \
-    --topic-arn arn:aws:sns:us-east-1:123456789012:MySNSTopic \
-    --protocol email \
-    --notification-endpoint your.email@example.com
+--topic-arn arn:aws:sns:us-east-1:123456789012:MySNSTopic \
+--protocol email \
+--notification-endpoint your.email@example.com
 
 ✅ Success Criteria
 
-Alerts reach on-call engineer within 30 seconds.
+Alerts reach on-call engineer within 30 seconds
 
-CloudWatch dashboard visualizes CPU, memory, and disk metrics.
+CloudWatch dashboard visualizes CPU, memory, and disk metrics
 
-Metrics can be analyzed historically to detect trends.
+Historical trends can be analyzed for root cause
 
-EC2 instances remain stable and users remain unaffected.
+EC2 instances remain stable; users remain unaffected
 
 🧰 Tools Used
 
-Amazon EC2 – Host application/API workloads.
+Amazon EC2 – Host application/API workloads
 
-CloudWatch Agent – Collect metrics every 60 seconds.
+CloudWatch Agent – Collect metrics every 60s
 
-CloudWatch Alarms – Threshold-based alerting.
+CloudWatch Alarms – Threshold-based alerting
 
-Amazon SNS – Instant notifications via Email/SMS/Slack.
+Amazon SNS – Instant notifications via Email/SMS/Slack
 
-AWS CLI – Deployment and automation.
+AWS CLI – Deployment & automation
 
-Terraform – Infrastructure as Code (IaC).
+Terraform – Infrastructure as Code (IaC)
 
-IAM Roles & Policies – Least-privilege security.
+IAM Roles & Policies – Least-privilege security
 
 📚 Skills Demonstrated
 
-CloudWatch metric collection & alerting.
+CloudWatch metric collection & alerting
 
-Real-time alert delivery with SNS.
+Real-time alert delivery with SNS
 
-EC2 instance configuration & monitoring.
+EC2 instance configuration & monitoring
 
-Troubleshooting under pressure.
+Troubleshooting under pressure
 
-CLI-based automation workflows.
+CLI-based automation workflows
 
-Infrastructure as Code (Terraform) and IAM management.
+Infrastructure as Code (Terraform) & IAM management
 
 🗂 Repository Structure
 Proactive-monitoring-with-cloudwatch-sns/
 ├── README.md
 ├── screenshots/
 │   ├── iam-permissions-check.png
-│   └── terraform-init.png
+│   ├── iam-config-screenshot.png
+│   └── terraform-deploy-screenshot.png
 ├── configs/
 │   └── cloudwatch-agent-config.json
 ├── terraform/
@@ -173,4 +175,3 @@ Open-source and available for educational purposes.
 🤝 Contributing
 
 Contributions, issues, and feature requests are welcome!
-
