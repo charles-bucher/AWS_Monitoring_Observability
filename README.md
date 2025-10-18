@@ -1,147 +1,140 @@
-🚨 proactive-monitoring-with-cloudwatch-sns
+🚨 Proactive Monitoring with CloudWatch & SNS
 
-TL;DR: Real-world AWS lab for proactive EC2 monitoring using CloudWatch + SNS. Detect CPU/memory/disk pressure before users complain. Designed for Cloud Support Engineers and aspiring SREs. Instant alerts, visual dashboards, and automation-ready CLI workflows.
+TL;DR: Real-world AWS lab for proactive EC2 monitoring. Detect CPU, memory, and disk pressure before users notice. Designed for Cloud Support Engineers and aspiring SREs. Instant alerts, dashboards, and automation-ready workflows.
 
-┌─────────────────┐
-│ EC2 Instance    │
-│ (Web/API)       │
-│                 │
-│  [CW Agent]     │  ← Collects: CPU, Memory, Disk
-└────────┬────────┘
-         │
-         │  Pushes metrics every 60s
-         ▼
-┌─────────────────────────┐
-│  Amazon CloudWatch      │
-│  - Custom Metrics       │
-│  - Standard Metrics     │
-│  - Alarms (Thresholds)  │
-└────────┬────────────────┘
-         │
-         │  Alarm State: OK → ALARM
-         ▼
-┌─────────────────────────┐
-│  Amazon SNS Topic       │
-│  "Production-Alerts"    │
-└────────┬────────────────┘
-         │
-    ┌────┴────┬──────────┬──────────┐
-    ▼         ▼          ▼          ▼
-  📧 Email  📱 SMS    💬 Slack  📟 PagerDuty
+🧠 Purpose & Context
 
-On-Call Engineer gets notified in < 30 seconds
+This project simulates a real-world scenario where backend EC2 instances experience performance spikes.
 
-📘 Scenario
-You're a Tier 2 Cloud Support Engineer at a fast-growing SaaS company. The backend EC2 instances are starting to show occasional CPU spikes and disk pressure during business hours.
-Your task:
+Detect issues before they become incidents.
 
-🛑 Detect performance issues before they become incidents
-🔔 Alert the on-call engineer via SNS the moment thresholds are breached
-📊 Build dashboards for the DevOps team to track trends and resolve root causes
+Alert the on-call engineer via SNS within ~30 seconds.
 
-This repo is your weaponized response. ⚔️
+Build dashboards for trend analysis and root cause resolution.
+
+I built this to demonstrate hands-on AWS monitoring, alerting, and infrastructure automation with Terraform.
 
 🧱 Architecture Overview
-┌────────────┐
-│    EC2     │
-│  (App/API) │
-└────┬───────┘
-     │
-     │  CloudWatch Agent
-     │
-┌─────────▼─────────┐
+┌─────────────┐
+│  EC2 Instance│
+│  (App/API)   │
+└─────┬───────┘
+      │ CloudWatch Agent
+      ▼
+┌───────────────┐
 │ Amazon CloudWatch │
-│ (Metrics & Alarms)│
-└─────────┬─────────┘
-          │
-          │  Alarm Triggered
-          ▼
-┌────────────────────┐
-│  Amazon SNS Topic  │
-│ (Email / SMS alert)│
-└────────┬───────────┘
-         ▼
-  On-Call Engineer
-  (Phone buzzes instantly)
+│ Metrics & Alarms  │
+└─────┬─────────┘
+      ▼ Alarm Triggered
+┌───────────────┐
+│ Amazon SNS    │
+│ Email/SMS/Slack│
+└─────┬─────────┘
+      ▼
+On-Call Engineer Notified < 30s
 
-⚙️ What's Inside
-FeatureDescriptionEC2 SetupLaunch an EC2 instance to monitorCloudWatch Agent ConfigCollect memory, disk, CPU metricsCustom MetricsGo beyond default—track disk space, memoryCloudWatch AlarmsDefine thresholds to trigger proactive alertsSNS NotificationSend alerts to on-call engineer (SMS/email)Dashboard SetupVisualize system health trends like a boss
+Screenshots
 
-🚀 How to Deploy
-1. 🖥️ Launch EC2 + Install CloudWatch Agent
-bashsudo yum update -y
+IAM Permissions Check:
+
+
+Terraform Initialization:
+
+
+⚙️ What This Project Does
+
+Automatic Metric Collection:
+
+CPU, memory, and disk metrics every 60s using CloudWatch Agent.
+
+Alarming & Notifications:
+
+Threshold-based alarms (e.g., CPU > 80% for 5 mins).
+
+SNS sends instant alerts via Email, SMS, or Slack.
+
+Infrastructure Automation:
+
+Terraform modules manage EC2, IAM roles, CloudWatch alarms, and SNS topics.
+
+Visual Monitoring:
+
+Dashboards track system health and trends over time.
+
+🚀 Deployment Steps
+
+Launch EC2 & install CloudWatch Agent
+
+sudo yum update -y
 sudo yum install -y amazon-cloudwatch-agent
-Copy in your cloudwatch-agent-config.json, then start the agent:
-bashsudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
-  -a fetch-config -m ec2 -c file:cloudwatch-agent-config.json -s
-2. 📊 Create Alarms
-Example: High CPU (over 80% for 5 minutes)
-bashaws cloudwatch put-metric-alarm \
-  --alarm-name "HighCPUAlarm" \
-  --metric-name CPUUtilization \
-  --namespace AWS/EC2 \
-  --statistic Average \
-  --period 300 \
-  --threshold 80 \
-  --comparison-operator GreaterThanThreshold \
-  --evaluation-periods 1 \
-  --dimensions Name=InstanceId,Value=i-0123456789abcdef0 \
-  --alarm-actions arn:aws:sns:us-east-1:123456789012:MySNSTopic
-3. 📬 Set Up SNS Notifications
-bashaws sns create-topic --name MySNSTopic
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+    -a fetch-config -m ec2 -c file:cloudwatch-agent-config.json -s
 
+
+Create CloudWatch Alarms
+
+aws cloudwatch put-metric-alarm \
+--alarm-name "HighCPUAlarm" \
+--metric-name CPUUtilization \
+--namespace AWS/EC2 \
+--statistic Average \
+--period 300 \
+--threshold 80 \
+--comparison-operator GreaterThanThreshold \
+--evaluation-periods 1 \
+--dimensions Name=InstanceId,Value=i-0123456789abcdef0 \
+--alarm-actions arn:aws:sns:us-east-1:123456789012:MySNSTopic
+
+
+Set Up SNS Notifications
+
+aws sns create-topic --name MySNSTopic
 aws sns subscribe \
-  --topic-arn arn:aws:sns:us-east-1:123456789012:MySNSTopic \
-  --protocol email \
-  --notification-endpoint your.email@example.com
-
-📸 Screenshots
-IAM Permissions Verification
-Checking Terraform user permissions before deployment:
-Show Image
-Terraform Infrastructure Initialization
-Initializing Terraform modules for automated infrastructure deployment:
-Show Image
+    --topic-arn arn:aws:sns:us-east-1:123456789012:MySNSTopic \
+    --protocol email \
+    --notification-endpoint your.email@example.com
 
 ✅ Success Criteria
 
-✅ You get notified within seconds of a high CPU event
-✅ Alarm shows up in CloudWatch console
-✅ You can track metrics visually via dashboard
-✅ App remains up and healthy—users never know there was a problem 😎
+Alerts reach on-call engineer within 30 seconds.
 
+CloudWatch dashboard visualizes CPU, memory, and disk metrics.
 
-🧠 Real-World Use Cases
+Metrics can be analyzed historically to detect trends.
 
-Monitor high CPU, memory, disk usage on EC2
-Alert DevOps before users complain
-Track performance during app deployments
-Use as template for multi-tier monitoring systems
-
+EC2 instances remain stable and users remain unaffected.
 
 🧰 Tools Used
 
-Amazon EC2
-CloudWatch Agent
-CloudWatch Alarms
-Amazon SNS
-AWS CLI
-IAM Role with CloudWatchAgentServerPolicy
-Terraform (for Infrastructure as Code)
+Amazon EC2 – Host application/API workloads.
 
+CloudWatch Agent – Collect metrics every 60 seconds.
+
+CloudWatch Alarms – Threshold-based alerting.
+
+Amazon SNS – Instant notifications via Email/SMS/Slack.
+
+AWS CLI – Deployment and automation.
+
+Terraform – Infrastructure as Code (IaC).
+
+IAM Roles & Policies – Least-privilege security.
 
 📚 Skills Demonstrated
 
-CloudWatch metric collection & alerting
-SNS setup for real-time alerts
-Linux EC2 configuration
-Troubleshooting under pressure
-Automation-ready CLI workflows
-Infrastructure as Code (IaC) with Terraform
-IAM permissions management
+CloudWatch metric collection & alerting.
 
+Real-time alert delivery with SNS.
 
-🗂️ Repository Structure
+EC2 instance configuration & monitoring.
+
+Troubleshooting under pressure.
+
+CLI-based automation workflows.
+
+Infrastructure as Code (Terraform) and IAM management.
+
+🗂 Repository Structure
 Proactive-monitoring-with-cloudwatch-sns/
 ├── README.md
 ├── screenshots/
@@ -158,23 +151,26 @@ Proactive-monitoring-with-cloudwatch-sns/
     └── test-cpu-spike.sh
 
 💼 About Me
-Charles – Cloud Support Engineer-in-training 🧑‍💻
-Obsessed with cloud health, alerting early, and building quiet, resilient infrastructure.
+
+Charles – Cloud Support Engineer-in-training. Obsessed with cloud health, early alerting, and resilient infrastructure.
+
 GitHub: Tommy813-lab
 
 🎓 Certification Alignment
-This project aligns with:
 
 AWS Cloud Practitioner
+
 AWS Solutions Architect Associate
+
 AWS SysOps Administrator
+
 AWS DevOps Engineer Professional
 
-
 📝 License
-This project is open source and available for educational purposes.
+
+Open-source and available for educational purposes.
 
 🤝 Contributing
+
 Contributions, issues, and feature requests are welcome!
 
-⭐ Star this repo if you found it helpful!
