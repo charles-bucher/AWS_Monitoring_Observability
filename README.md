@@ -1,60 +1,58 @@
-🛡️ CloudWatch Sentinel: Proactive Monitoring & Incident Response
+# 🚀 CloudWatch-Sentinel
 
-Charles Bucher | Level 10 TechOps
+> From concept to production — real-world infrastructure, automation-first, security-focused.
 
-This repository demonstrates how to build a robust monitoring and alerting system using AWS CloudWatch and SNS. It focuses on collecting detailed EC2 instance metrics, setting up alarms, and automating notifications to enhance observability and incident response capabilities.
+---
 
-🔑 Key Features
+## 🧩 Project Overview
+CloudWatch-Sentinel is a hands-on TechOps project demonstrating **practical cloud architecture, IaC, automation, and security**.
 
-EC2 Metrics Collection: Gathers comprehensive metrics from EC2 instances to monitor performance and health.
+Key highlights:
+- Production-ready cloud architecture
+- Automated monitoring and alerting
+- Secure by design (IAM, S3 encryption, WAF, CloudFront)
+- Fully modular and reusable components
 
-CloudWatch Alarms: Configures alarms to detect anomalies and trigger automated actions.
+---
 
-SNS Notifications: Sends real-time notifications to stakeholders upon alarm triggers.
+## 🛠️ Tech Stack
 
-Log Aggregation: Collects and analyzes logs for deeper insights and troubleshooting.
+| Layer | Tools / Technologies |
+|-------|--------------------|
+| Cloud / Infra | AWS (VPC, EC2, S3, Lambda, CloudFront, Route 53) |
+| IaC / Automation | Terraform, Bash, Python |
+| CI/CD | GitHub Actions, Lambda triggers, EventBridge pipelines |
+| Monitoring / Security | CloudWatch, GuardDuty, WAF, IAM policies |
 
-Infrastructure as Code: Utilizes CloudFormation for consistent and repeatable deployments.
+---
 
-🛠️ Tech Stack
-Component	Purpose
-AWS CloudWatch	Monitoring and observability
-Amazon SNS	Notification service
-CloudFormation	Infrastructure as Code
-Python	Scripting and automation
-🚀 Project Walkthrough
-1. Deploy Resources
-aws cloudformation create-stack --stack-name CloudWatchSentinel --template-body file://cloudformation/template.yaml
+## 📌 Features
+- **Infrastructure as Code**: Terraform modules for all resources.
+- **Serverless Automation**: Lambda functions handle recurring tasks.
+- **Monitoring Dashboards**: CloudWatch metrics, alerts, and logs.
+- **Secure Hosting**: S3 + CloudFront static hosting with HTTPS & WAF.
+- **CI/CD Ready**: GitHub Actions pipelines for validation and deployment.
 
+---
 
-This command deploys the necessary resources defined in the CloudFormation template.
+## 📂 Repo Structure
+```
+CloudWatch-Sentinel/
+├── README.md
+├── LICENSE.md
+├── Docs/
+├── Terraform/
+├── scripts/
+├── modules/
+├── .github/workflows/
+├── diagrams/
+└── screenshots/
+```
 
-2. Monitor Metrics
+---
 
-Utilize CloudWatch to monitor EC2 instance metrics such as CPU utilization, disk I/O, and network traffic.
+## 🔗 Resources & Links
+- Portfolio: https://charles-bucher.github.io  
+- GitHub: https://github.com/charles-bucher  
+- LinkedIn: https://linkedin.com/in/charles-bucher85813  
 
-3. Set Up Alarms
-
-Configure CloudWatch alarms to detect thresholds and trigger actions like sending notifications via SNS.
-
-4. Automate Responses
-
-Implement Lambda functions to automate responses to specific alarms, such as scaling actions or remediation steps.
-
-📸 Architecture Overview
-
-The diagram above illustrates the flow from EC2 metrics collection to alarm triggering and notification delivery.
-
-🎯 Learning Outcomes
-
-Mastery in setting up AWS CloudWatch for comprehensive monitoring.
-
-Proficiency in configuring alarms and automating responses.
-
-Understanding of integrating SNS for real-time notifications.
-
-Experience in deploying infrastructure using CloudFormation.
-
-🔗 License
-
-MIT License — Free to use, modify, and share.
