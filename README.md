@@ -1,177 +1,60 @@
-🚨 Proactive Monitoring with CloudWatch & SNS
+🛡️ CloudWatch Sentinel: Proactive Monitoring & Incident Response
 
-TL;DR: Hands-on AWS lab for proactive EC2 monitoring. Detect CPU, memory, and disk pressure before users notice. Real-time alerts, dashboards, and automation-ready workflows for Cloud Support Engineers and aspiring SREs.
+Charles Bucher | Level 10 TechOps
 
-🧠 Purpose & Context
+This repository demonstrates how to build a robust monitoring and alerting system using AWS CloudWatch and SNS. It focuses on collecting detailed EC2 instance metrics, setting up alarms, and automating notifications to enhance observability and incident response capabilities.
 
-This project simulates a real-world scenario where backend EC2 instances experience performance spikes:
+🔑 Key Features
 
-Detect issues before they become incidents
+EC2 Metrics Collection: Gathers comprehensive metrics from EC2 instances to monitor performance and health.
 
-Alert on-call engineers via SNS in <30 seconds
+CloudWatch Alarms: Configures alarms to detect anomalies and trigger automated actions.
 
-Build dashboards for trend analysis and root-cause resolution
+SNS Notifications: Sends real-time notifications to stakeholders upon alarm triggers.
 
-I built this to demonstrate hands-on AWS monitoring, alerting, and infrastructure automation using Terraform.
+Log Aggregation: Collects and analyzes logs for deeper insights and troubleshooting.
 
-🧱 Architecture Overview
-┌─────────────┐
-│ EC2 Instance│  (App/API)
-└─────┬───────┘
-      │
- CloudWatch Agent
-      ▼
-┌───────────────┐
-│ Amazon CloudWatch │ Metrics & Alarms
-└─────┬─────────┘
-      ▼
-┌───────────────┐
-│ Amazon SNS    │ Email / SMS / Slack
-└─────┬─────────┘
-      ▼
-On-Call Engineer Notified < 30s
+Infrastructure as Code: Utilizes CloudFormation for consistent and repeatable deployments.
 
-🖼 Screenshots
+🛠️ Tech Stack
+Component	Purpose
+AWS CloudWatch	Monitoring and observability
+Amazon SNS	Notification service
+CloudFormation	Infrastructure as Code
+Python	Scripting and automation
+🚀 Project Walkthrough
+1. Deploy Resources
+aws cloudformation create-stack --stack-name CloudWatchSentinel --template-body file://cloudformation/template.yaml
 
-IAM Permissions Check:
 
+This command deploys the necessary resources defined in the CloudFormation template.
 
-CloudWatch Agent Config:
+2. Monitor Metrics
 
+Utilize CloudWatch to monitor EC2 instance metrics such as CPU utilization, disk I/O, and network traffic.
 
-Terraform Deployment:
+3. Set Up Alarms
 
+Configure CloudWatch alarms to detect thresholds and trigger actions like sending notifications via SNS.
 
-⚙️ What This Project Does
+4. Automate Responses
 
-Automatic Metric Collection:
+Implement Lambda functions to automate responses to specific alarms, such as scaling actions or remediation steps.
 
-CPU, memory, and disk metrics every 60s via CloudWatch Agent
+📸 Architecture Overview
 
-Alarming & Notifications:
+The diagram above illustrates the flow from EC2 metrics collection to alarm triggering and notification delivery.
 
-Threshold-based alarms (e.g., CPU > 80% for 5 minutes)
+🎯 Learning Outcomes
 
-SNS sends instant alerts via Email, SMS, or Slack
+Mastery in setting up AWS CloudWatch for comprehensive monitoring.
 
-Infrastructure Automation:
+Proficiency in configuring alarms and automating responses.
 
-Terraform modules manage EC2, IAM roles, CloudWatch alarms, and SNS topics
+Understanding of integrating SNS for real-time notifications.
 
-Visual Monitoring:
+Experience in deploying infrastructure using CloudFormation.
 
-Dashboards track system health and trends over time
+🔗 License
 
-🚀 Deployment Steps
-
-Launch EC2 & install CloudWatch Agent
-
-sudo yum update -y
-sudo yum install -y amazon-cloudwatch-agent
-sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
--a fetch-config -m ec2 -c file:cloudwatch-agent-config.json -s
-
-
-Create CloudWatch Alarms
-
-aws cloudwatch put-metric-alarm \
---alarm-name "HighCPUAlarm" \
---metric-name CPUUtilization \
---namespace AWS/EC2 \
---statistic Average \
---period 300 \
---threshold 80 \
---comparison-operator GreaterThanThreshold \
---evaluation-periods 1 \
---dimensions Name=InstanceId,Value=i-0123456789abcdef0 \
---alarm-actions arn:aws:sns:us-east-1:123456789012:MySNSTopic
-
-
-Set Up SNS Notifications
-
-aws sns create-topic --name MySNSTopic
-aws sns subscribe \
---topic-arn arn:aws:sns:us-east-1:123456789012:MySNSTopic \
---protocol email \
---notification-endpoint your.email@example.com
-
-✅ Success Criteria
-
-Alerts reach on-call engineer within 30 seconds
-
-CloudWatch dashboard visualizes CPU, memory, and disk metrics
-
-Historical trends can be analyzed for root cause
-
-EC2 instances remain stable; users remain unaffected
-
-🧰 Tools Used
-
-Amazon EC2 – Host application/API workloads
-
-CloudWatch Agent – Collect metrics every 60s
-
-CloudWatch Alarms – Threshold-based alerting
-
-Amazon SNS – Instant notifications via Email/SMS/Slack
-
-AWS CLI – Deployment & automation
-
-Terraform – Infrastructure as Code (IaC)
-
-IAM Roles & Policies – Least-privilege security
-
-📚 Skills Demonstrated
-
-CloudWatch metric collection & alerting
-
-Real-time alert delivery with SNS
-
-EC2 instance configuration & monitoring
-
-Troubleshooting under pressure
-
-CLI-based automation workflows
-
-Infrastructure as Code (Terraform) & IAM management
-
-🗂 Repository Structure
-Proactive-monitoring-with-cloudwatch-sns/
-├── README.md
-├── screenshots/
-│   ├── iam-permissions-check.png
-│   ├── iam-config-screenshot.png
-│   └── terraform-deploy-screenshot.png
-├── configs/
-│   └── cloudwatch-agent-config.json
-├── terraform/
-│   ├── main.tf
-│   ├── variables.tf
-│   └── outputs.tf
-└── scripts/
-    ├── setup-cloudwatch.sh
-    └── test-cpu-spike.sh
-
-💼 About Me
-
-Charles – Cloud Support Engineer-in-training. Obsessed with cloud health, early alerting, and resilient infrastructure.
-
-GitHub: Tommy813-lab
-
-🎓 Certification Alignment
-
-AWS Cloud Practitioner
-
-AWS Solutions Architect Associate
-
-AWS SysOps Administrator
-
-AWS DevOps Engineer Professional
-
-📝 License
-
-Open-source and available for educational purposes.
-
-🤝 Contributing
-
-Contributions, issues, and feature requests are welcome!
+MIT License — Free to use, modify, and share.
