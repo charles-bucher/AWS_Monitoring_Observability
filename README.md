@@ -61,3 +61,14 @@ CloudWatch-Sentinel/
 ## 📸 Screenshots
 
 Below are example screenshots from this project for visual verification and demonstration:
+
+## Screenshots
+
+<img src="screenshots/iam config screenshot.png" alt="iam config screenshot.png" width="400px">
+
+<img src="screenshots/terraform deploy screenshot.png" alt="terraform deploy screenshot.png" width="400px">
+
+<img src="screenshots/iam config screenshot.png" alt="iam config screenshot.png" width="400px">
+
+<img src="screenshots/terraform deploy screenshot.png" alt="terraform deploy screenshot.png" width="400px">
+
