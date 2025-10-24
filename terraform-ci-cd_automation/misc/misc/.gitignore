@@ -1,0 +1,9 @@
+*.tfstate
+*.tfvars
+*.DS_Store
+*.log
+*.zip
+*.tmp
+*.bak
+node_modules/
+terraform.tfstate*
