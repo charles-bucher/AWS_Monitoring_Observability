@@ -20,7 +20,7 @@ Think of it like a **command center for AWS**—all metrics, logs, and alerts in
 | 📈 CloudWatch Dashboards | See EC2, RDS, Lambda, S3 metrics at a glance |
 | 🔔 Alarms & Notifications | Auto-alerts via SNS / Slack / Email |
 | 🛡️ GuardDuty Integration | Continuous threat detection & automated responses |
-| 💻 Terraform IaC | Everything is code, repeatable & auditproduction-ready |
+| 💻 Terraform IaC | Everything is code, repeatable & auditproductionproduction-ready |
 | 📊 Centralized Logs | CloudWatch + S3 logs for full observability |
 | 🔄 CI/CD Friendly | GitHub Actions workflows to deploy monitoring infra |
 | 🔍 Audit Ready | Follows AWS best practices & compliance standards |
@@ -33,7 +33,7 @@ Think of it like a **command center for AWS**—all metrics, logs, and alerts in
 ![License](https://img.shields.io/badge/license-MIT-blue)  
 ![Coverage](https://img.shields.io/badge/coverage-100%25-green)  
 ![AWS](https://img.shields.io/badge/aws-certified-orange)  
-![CloudOps](https://img.shields.io/badge/cloudopsproduction-ready-brightgreen)  
+![CloudOps](https://img.shields.io/badge/cloudopsproductionproduction-ready-brightgreen)  
 ![Terraform](https://img.shields.io/badge/terraform-v1.6-blueviolet)  
 
 ---
